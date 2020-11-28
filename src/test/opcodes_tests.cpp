@@ -24,7 +24,7 @@ static void CheckOpError(uint32_t flags, const stacktype& original_stack, const 
 
     ScriptError err = SCRIPT_ERR_OK;
     stacktype stack{original_stack};
-    bool r = EvalScript(stack, script, flags, sigchecker, SigVersion::BASE, &err);
+    bool r = EvalScript(stack, script, flags | SCRIPT_ENABLE_DIP0020_OPDCODES, sigchecker, SigVersion::BASE, &err);
     BOOST_CHECK(!r);
     BOOST_CHECK_EQUAL(err, expected_error);
 }
@@ -54,7 +54,7 @@ static void CheckOp(uint32_t flags, const stacktype original_stack, const CScrip
 
     ScriptError err = SCRIPT_ERR_OK;
     stacktype stack{original_stack};
-    bool r = EvalScript(stack, script, flags, sigchecker, SigVersion::BASE, &err);
+    bool r = EvalScript(stack, script, flags| SCRIPT_ENABLE_DIP0020_OPDCODES, sigchecker, SigVersion::BASE, &err);
     BOOST_CHECK(r);
     BOOST_CHECK(stack == expected_stack);
 }

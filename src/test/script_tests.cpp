@@ -146,6 +146,7 @@ CMutableTransaction BuildSpendingTransaction(const CScript& scriptSig, const CMu
 void DoTest(const CScript& scriptPubKey, const CScript& scriptSig, int flags, const std::string& message, int scriptError)
 {
     bool expect = (scriptError == SCRIPT_ERR_OK);
+    int fEnableDIP0020Opcodes = SCRIPT_ENABLE_DIP0020_OPDCODES & flags;
     ScriptError err;
     CMutableTransaction txCredit = BuildCreditingTransaction(scriptPubKey);
     CMutableTransaction tx = BuildSpendingTransaction(scriptSig, txCredit);
@@ -155,7 +156,8 @@ void DoTest(const CScript& scriptPubKey, const CScript& scriptSig, int flags, co
 
     // Verify that removing flags from a passing test or adding flags to a failing test does not change the result.
     for (int i = 0; i < 16; ++i) {
-        int extra_flags = InsecureRandBits(16);
+        // Make sure DIP0020 opcodes flag stays on or off, so exclude it from the random bits.
+        int extra_flags = InsecureRandBits(16) & ~fEnableDIP0020Opcodes;
         int combined_flags = expect ? (flags & ~extra_flags) : (flags | extra_flags);
         // Weed out some invalid flag combinations.
         if (combined_flags & SCRIPT_VERIFY_CLEANSTACK && ~combined_flags & SCRIPT_VERIFY_P2SH) continue;
