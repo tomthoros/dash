@@ -156,11 +156,12 @@ void DoTest(const CScript& scriptPubKey, const CScript& scriptSig, int flags, co
 
     // Verify that removing flags from a passing test or adding flags to a failing test does not change the result.
     for (int i = 0; i < 16; ++i) {
-        // Make sure DIP0020 opcodes flag stays on or off, so exclude it from the random bits.
-        int extra_flags = InsecureRandBits(16) & ~fEnableDIP0020Opcodes;
+        int extra_flags = InsecureRandBits(16);
         int combined_flags = expect ? (flags & ~extra_flags) : (flags | extra_flags);
         // Weed out some invalid flag combinations.
         if (combined_flags & SCRIPT_VERIFY_CLEANSTACK && ~combined_flags & SCRIPT_VERIFY_P2SH) continue;
+        // Make sure DIP0020 opcodes flag stays unchanged.
+        combined_flags = fEnableDIP0020Opcodes ? (combined_flags | SCRIPT_ENABLE_DIP0020_OPDCODES) : (combined_flags & ~SCRIPT_ENABLE_DIP0020_OPDCODES);
         BOOST_CHECK_MESSAGE(VerifyScript(scriptSig, scriptPubKey, combined_flags, MutableTransactionSignatureChecker(&tx, 0, txCredit.vout[0].nValue), &err) == expect, message + strprintf(" (with flags %x)", combined_flags));
     }
 

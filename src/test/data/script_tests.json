@@ -829,7 +829,7 @@
 ["NOP", "2SWAP 1", "P2SH,STRICTENC", "INVALID_STACK_OPERATION"],
 ["1", "2 3 2SWAP 1", "P2SH,STRICTENC", "INVALID_STACK_OPERATION"],
 
-["'a' 'bc'", "CAT EQUAL", "P2SH,STRICTENC", "DISABLED_OPCODE"],
+["'a' 'bc'", "CAT", "P2SH,STRICTENC", "DISABLED_OPCODE"],
 ["'abc' 'a' 'bc'", "CAT EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK"],
 ["'abc' 'a' 'bc'", "CAT EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK"],
 ["'' '' ''", "CAT EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK"],
@@ -843,7 +843,7 @@
 ["'a'", "CAT", "P2SH,STRICTENC,DIP0020_OPCODES", "INVALID_STACK_OPERATION"],
 ["0 0", "CAT DEPTH 1 EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK", "Stack depth correct"],
 
-["'abc' 0", "SPLIT DROP EQUAL", "P2SH,STRICTENC", "DISABLED_OPCODE"],
+["'abc' 0", "SPLIT", "P2SH,STRICTENC", "DISABLED_OPCODE"],
 ["'' 'abc' 0", "SPLIT DROP EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK"],
 ["'abc' 'abc' 0", "SPLIT SWAP DROP EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK"],
 ["'' 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' 0", "SPLIT DROP EQUAL", "P2SH,STRICTENC,DIP0020_OPCODES", "OK", "split 520 bytes"],
