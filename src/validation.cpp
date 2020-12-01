@@ -1489,7 +1489,7 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsVi
                     check.swap(pvChecks->back());
                 } else if (!check()) {
                     const bool hasNonMandatoryFlags = (flags & STANDARD_NOT_MANDATORY_VERIFY_FLAGS) != 0;
-                    const bool doesNotHaveDip0020Opcodes = (flags & SCRIPT_ENABLE_DIP0020_OPDCODES) == 0;
+                    const bool doesNotHaveDip0020Opcodes = (flags & SCRIPT_ENABLE_DIP0020_OPCODES) == 0;
 
                     if (hasNonMandatoryFlags || doesNotHaveDip0020Opcodes) {
                         // Check whether the failure was caused by a
@@ -1499,7 +1499,7 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsVi
                         // avoid splitting the network between upgraded and
                         // non-upgraded nodes.
                         CScriptCheck check2(coin.out, tx, i,
-                                (flags & ~STANDARD_NOT_MANDATORY_VERIFY_FLAGS) | SCRIPT_ENABLE_DIP0020_OPDCODES, cacheSigStore, &txdata);
+                                (flags & ~STANDARD_NOT_MANDATORY_VERIFY_FLAGS) | SCRIPT_ENABLE_DIP0020_OPCODES, cacheSigStore, &txdata);
                         if (check2())
                             return state.Invalid(false, REJECT_NONSTANDARD, strprintf("non-mandatory-script-verify-flag (%s)", ScriptErrorString(check.GetScriptError())));
                     }
@@ -1976,7 +1976,7 @@ static unsigned int GetBlockScriptFlags(const CBlockIndex* pindex, const Consens
     }
 
     if (VersionBitsState(pindex->pprev, consensusparams, Consensus::DEPLOYMENT_V17, versionbitscache) == ThresholdState::ACTIVE) {
-        flags |= SCRIPT_ENABLE_DIP0020_OPDCODES;
+        flags |= SCRIPT_ENABLE_DIP0020_OPCODES;
     }
 
     return flags;

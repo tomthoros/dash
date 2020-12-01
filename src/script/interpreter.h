@@ -97,7 +97,7 @@ enum
     SCRIPT_VERIFY_NULLFAIL = (1U << 14),
 
     // Enable the opcodes listed in DIP0020 (CAT, SPLIT, etc).
-    SCRIPT_ENABLE_DIP0020_OPDCODES = (1U << 15),
+    SCRIPT_ENABLE_DIP0020_OPCODES = (1U << 15),
 };
 
 bool CheckSignatureEncoding(const std::vector<unsigned char> &vchSig, unsigned int flags, ScriptError* serror);
