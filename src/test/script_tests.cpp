@@ -146,7 +146,7 @@ CMutableTransaction BuildSpendingTransaction(const CScript& scriptSig, const CMu
 void DoTest(const CScript& scriptPubKey, const CScript& scriptSig, int flags, const std::string& message, int scriptError)
 {
     bool expect = (scriptError == SCRIPT_ERR_OK);
-    int fEnableDIP0020Opcodes = SCRIPT_ENABLE_DIP0020_OPCODES & flags;
+    bool fEnableDIP0020Opcodes = (SCRIPT_ENABLE_DIP0020_OPCODES & flags) != 0;
     ScriptError err;
     CMutableTransaction txCredit = BuildCreditingTransaction(scriptPubKey);
     CMutableTransaction tx = BuildSpendingTransaction(scriptSig, txCredit);
