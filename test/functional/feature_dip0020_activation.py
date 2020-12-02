@@ -64,7 +64,6 @@ class DIP0020ActivationTest(BitcoinTestFramework):
         self.node.generate(1)
 
         # Should be spendable now
-        self.node.decoderawtransaction(tx0_hex)
         tx0id = self.node.sendrawtransaction(tx0_hex)
         assert (tx0id in set(self.node.getrawmempool()))
 
