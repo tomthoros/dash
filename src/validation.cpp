@@ -1489,9 +1489,9 @@ bool CheckInputs(const CTransaction& tx, CValidationState &state, const CCoinsVi
                     check.swap(pvChecks->back());
                 } else if (!check()) {
                     const bool hasNonMandatoryFlags = (flags & STANDARD_NOT_MANDATORY_VERIFY_FLAGS) != 0;
-                    const bool doesNotHaveDip0020Opcodes = (flags & SCRIPT_ENABLE_DIP0020_OPCODES) == 0;
+                    const bool hasDIP0020Opcodes = (flags & SCRIPT_ENABLE_DIP0020_OPCODES) != 0;
 
-                    if (hasNonMandatoryFlags || doesNotHaveDip0020Opcodes) {
+                    if (hasNonMandatoryFlags || !hasDIP0020Opcodes) {
                         // Check whether the failure was caused by a
                         // non-mandatory script verification check, such as
                         // non-standard DER encodings or non-null dummy
