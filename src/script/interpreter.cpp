@@ -306,7 +306,10 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
             bool fDIP0020OpcodesEnabled = (flags & SCRIPT_ENABLE_DIP0020_OPCODES) != 0;
             if (!fDIP0020OpcodesEnabled) {
                 if (opcode == OP_CAT ||
-                    opcode == OP_SPLIT) {
+                    opcode == OP_SPLIT ||
+                    opcode == OP_AND ||
+                    opcode == OP_OR ||
+                    opcode == OP_XOR) {
                     return set_error(serror, SCRIPT_ERR_DISABLED_OPCODE); // Disabled opcodes.
                 }
             }
@@ -314,9 +317,6 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
             if (opcode == OP_LEFT ||
                 opcode == OP_RIGHT ||
                 opcode == OP_INVERT ||
-                opcode == OP_AND ||
-                opcode == OP_OR ||
-                opcode == OP_XOR ||
                 opcode == OP_2MUL ||
                 opcode == OP_2DIV ||
                 opcode == OP_MUL ||
@@ -745,6 +745,47 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                         else
                             return set_error(serror, SCRIPT_ERR_EQUALVERIFY);
                     }
+                }
+                break;
+
+                case OP_AND:
+                case OP_OR:
+                case OP_XOR: {
+                    // (x1 x2 - out)
+                    if (stack.size() < 2) {
+                        return set_error(serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
+                    }
+                    valtype &vch1 = stacktop(-2);
+                    valtype &vch2 = stacktop(-1);
+
+                    // Inputs must be the same size
+                    if (vch1.size() != vch2.size()) {
+                        return set_error(serror, SCRIPT_ERR_INVALID_OPERAND_SIZE);
+                    }
+
+                    // To avoid allocating, we modify vch1 in place.
+                    switch (opcode) {
+                        case OP_AND:
+                            for (size_t i = 0; i < vch1.size(); ++i) {
+                                vch1[i] &= vch2[i];
+                            }
+                            break;
+                        case OP_OR:
+                            for (size_t i = 0; i < vch1.size(); ++i) {
+                                vch1[i] |= vch2[i];
+                            }
+                            break;
+                        case OP_XOR:
+                            for (size_t i = 0; i < vch1.size(); ++i) {
+                                vch1[i] ^= vch2[i];
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+
+                    // And pop vch2.
+                    popstack(stack);
                 }
                 break;
 
