@@ -309,7 +309,9 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                     opcode == OP_SPLIT ||
                     opcode == OP_AND ||
                     opcode == OP_OR ||
-                    opcode == OP_XOR) {
+                    opcode == OP_XOR ||
+                    opcode == OP_DIV ||
+                    opcode == OP_MOD) {
                     return set_error(serror, SCRIPT_ERR_DISABLED_OPCODE); // Disabled opcodes.
                 }
             }
@@ -320,8 +322,6 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                 opcode == OP_2MUL ||
                 opcode == OP_2DIV ||
                 opcode == OP_MUL ||
-                opcode == OP_DIV ||
-                opcode == OP_MOD ||
                 opcode == OP_LSHIFT ||
                 opcode == OP_RSHIFT)
                 return set_error(serror, SCRIPT_ERR_DISABLED_OPCODE); // Disabled opcodes.
@@ -821,6 +821,8 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
 
                 case OP_ADD:
                 case OP_SUB:
+                case OP_DIV:
+                case OP_MOD:
                 case OP_BOOLAND:
                 case OP_BOOLOR:
                 case OP_NUMEQUAL:
@@ -847,6 +849,22 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
 
                     case OP_SUB:
                         bn = bn1 - bn2;
+                        break;
+
+                    case OP_DIV:
+                        // denominator must not be 0
+                        if (bn2 == 0) {
+                            return set_error(serror, SCRIPT_ERR_DIV_BY_ZERO);
+                        }
+                        bn = bn1 / bn2;
+                        break;
+
+                    case OP_MOD:
+                        // divisor must not be 0
+                        if (bn2 == 0) {
+                            return set_error(serror, SCRIPT_ERR_MOD_BY_ZERO);
+                        }
+                        bn = bn1 % bn2;
                         break;
 
                     case OP_BOOLAND:             bn = (bn1 != bnZero && bn2 != bnZero); break;
