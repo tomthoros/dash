@@ -38,6 +38,8 @@ typedef enum ScriptError_t
     /* Operands checks */
     SCRIPT_ERR_INVALID_SPLIT_RANGE,
     SCRIPT_ERR_INVALID_OPERAND_SIZE,
+    SCRIPT_ERR_INVALID_NUMBER_RANGE,
+    SCRIPT_ERR_IMPOSSIBLE_ENCODING,
 
     /* Divisor errors */
     SCRIPT_ERR_DIV_BY_ZERO,

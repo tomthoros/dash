@@ -51,6 +51,11 @@ const char* ScriptErrorString(const ScriptError serror)
             return "Invalid OP_SPLIT range";
         case SCRIPT_ERR_INVALID_OPERAND_SIZE:
             return "Invalid operand size";
+        case SCRIPT_ERR_INVALID_NUMBER_RANGE:
+            return "Given operand is not a number within the valid range "
+                   "[-2^31...2^31]";
+        case SCRIPT_ERR_IMPOSSIBLE_ENCODING:
+            return "The requested encoding is impossible to satisfy";
         case SCRIPT_ERR_DIV_BY_ZERO:
             return "Division by zero error";
         case SCRIPT_ERR_MOD_BY_ZERO:
