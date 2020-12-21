@@ -183,6 +183,9 @@ enum opcodetype
     OP_NOP9 = 0xb8,
     OP_NOP10 = 0xb9,
 
+    // More crypto
+    OP_CHECKDATASIG = 0xba,
+    OP_CHECKDATASIGVERIFY = 0xbb,
 
     // template matching params
     OP_SMALLINTEGER = 0xfa,
@@ -194,7 +197,7 @@ enum opcodetype
 };
 
 // Maximum value that an opcode can be
-static const unsigned int MAX_OPCODE = OP_NOP10;
+static const unsigned int MAX_OPCODE = OP_CHECKDATASIGVERIFY;
 
 const char* GetOpName(opcodetype opcode);
 

@@ -313,7 +313,9 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                     opcode == OP_DIV ||
                     opcode == OP_MOD ||
                     opcode == OP_NUM2BIN ||
-                    opcode == OP_BIN2NUM) {
+                    opcode == OP_BIN2NUM ||
+                    opcode == OP_CHECKDATASIG ||
+                    opcode == OP_CHECKDATASIGVERIFY) {
                     return set_error(serror, SCRIPT_ERR_DISABLED_OPCODE); // Disabled opcodes.
                 }
             }
@@ -987,6 +989,49 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                 }
                 break;
 
+                case OP_CHECKDATASIG:
+                case OP_CHECKDATASIGVERIFY: {
+                    // (sig message pubkey -- bool)
+                    if (stack.size() < 3) {
+                        return set_error(serror, SCRIPT_ERR_INVALID_STACK_OPERATION);
+                    }
+
+                    valtype &vchSig = stacktop(-3);
+                    valtype &vchMessage = stacktop(-2);
+                    valtype &vchPubKey = stacktop(-1);
+
+                    if (!CheckSignatureEncoding(vchSig, flags, serror) || !CheckPubKeyEncoding(vchPubKey, flags, serror)) {
+                        // serror is set
+                        return false;
+                    }
+
+                    bool fSuccess = false;
+                    if (vchSig.size()) {
+                        valtype vchHash(32);
+                        CSHA256()
+                            .Write(vchMessage.data(), vchMessage.size())
+                            .Finalize(vchHash.data());
+                        fSuccess = checker.VerifySignature(vchSig, CPubKey(vchPubKey), uint256(vchHash));
+                    }
+
+                    if (!fSuccess && (flags & SCRIPT_VERIFY_NULLFAIL) && vchSig.size()) {
+                        return set_error(serror, SCRIPT_ERR_SIG_NULLFAIL);
+                    }
+
+                    popstack(stack);
+                    popstack(stack);
+                    popstack(stack);
+                    stack.push_back(fSuccess ? vchTrue : vchFalse);
+                    if (opcode == OP_CHECKDATASIGVERIFY) {
+                        if (fSuccess) {
+                            popstack(stack);
+                        } else {
+                            return set_error(serror, SCRIPT_ERR_CHECKDATASIGVERIFY);
+                        }
+                    }
+                }
+                break;
+
                 case OP_CHECKMULTISIG:
                 case OP_CHECKMULTISIGVERIFY:
                 {
@@ -1390,8 +1435,7 @@ uint256 SignatureHash(const CScript& scriptCode, const CTransaction& txTo, unsig
     return ss.GetHash();
 }
 
-bool TransactionSignatureChecker::VerifySignature(const std::vector<unsigned char>& vchSig, const CPubKey& pubkey, const uint256& sighash) const
-{
+bool BaseSignatureChecker::VerifySignature(const std::vector<uint8_t> &vchSig, const CPubKey &pubkey, const uint256 &sighash) const {
     return pubkey.Verify(sighash, vchSig);
 }
 
