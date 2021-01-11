@@ -382,7 +382,7 @@ bool CScriptNum::MinimallyEncode(std::vector<uint8_t> &data)
         }
     }
 
-    // If we the whole thing is zeros, then we have a zero.
+    // If the whole thing is zeros, then we have a zero (empty array).
     data = {};
     return true;
 }
