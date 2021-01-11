@@ -38,7 +38,8 @@ struct KeyData {
 };
 
 static void CheckError(uint32_t flags, const stacktype &original_stack,
-                       const CScript &script, ScriptError expected) {
+                       const CScript &script, ScriptError expected)
+{
     BaseSignatureChecker sigchecker;
     ScriptError err = ScriptError::SCRIPT_ERR_OK;
     stacktype stack{original_stack};
@@ -48,7 +49,8 @@ static void CheckError(uint32_t flags, const stacktype &original_stack,
 }
 
 static void CheckPass(uint32_t flags, const stacktype &original_stack,
-                      const CScript &script, const stacktype &expected) {
+                      const CScript &script, const stacktype &expected)
+{
     BaseSignatureChecker sigchecker;
     ScriptError err = ScriptError::SCRIPT_ERR_OK;
     stacktype stack{original_stack};
@@ -63,20 +65,23 @@ static void CheckPass(uint32_t flags, const stacktype &original_stack,
  */
 static void CheckTestResultForAllFlags(const stacktype &original_stack,
                                        const CScript &script,
-                                       const stacktype &expected) {
+                                       const stacktype &expected)
+{
     for (uint32_t flags : flagset) {
         CheckPass(flags, original_stack, script, expected);
     }
 }
 
 static void CheckErrorForAllFlags(const stacktype &original_stack,
-                                  const CScript &script, ScriptError expected) {
+                                  const CScript &script, ScriptError expected)
+{
     for (uint32_t flags : flagset) {
         CheckError(flags, original_stack, script, expected);
     }
 }
 
-BOOST_AUTO_TEST_CASE(checkdatasig_test) {
+BOOST_AUTO_TEST_CASE(checkdatasig_test)
+{
     // Empty stack.
     CheckErrorForAllFlags({}, CScript() << OP_CHECKDATASIG,
                           ScriptError::SCRIPT_ERR_INVALID_STACK_OPERATION);

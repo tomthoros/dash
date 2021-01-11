@@ -1215,7 +1215,7 @@ bool EvalScript(std::vector<std::vector<unsigned char> >& stack, const CScript& 
                     valtype &rawnum = stacktop(-1);
 
                     // Try to see if we can fit that number in the number of
-                    // byte requested.
+                    // bytes requested.
                     CScriptNum::MinimallyEncode(rawnum);
                     if (rawnum.size() > size) {
                         // We definitively cannot.
@@ -1435,7 +1435,8 @@ uint256 SignatureHash(const CScript& scriptCode, const CTransaction& txTo, unsig
     return ss.GetHash();
 }
 
-bool BaseSignatureChecker::VerifySignature(const std::vector<uint8_t> &vchSig, const CPubKey &pubkey, const uint256 &sighash) const {
+bool BaseSignatureChecker::VerifySignature(const std::vector<uint8_t> &vchSig, const CPubKey &pubkey, const uint256 &sighash) const
+{
     return pubkey.Verify(sighash, vchSig);
 }
 

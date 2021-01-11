@@ -312,8 +312,8 @@ bool GetScriptOp(CScriptBase::const_iterator& pc, CScriptBase::const_iterator en
     return true;
 }
 
-bool CScriptNum::IsMinimallyEncoded(const std::vector<uint8_t> &vch,
-                                    const size_t nMaxNumSize) {
+bool CScriptNum::IsMinimallyEncoded(const std::vector<uint8_t> &vch, const size_t nMaxNumSize)
+{
     if (vch.size() > nMaxNumSize) {
         return false;
     }
@@ -340,7 +340,8 @@ bool CScriptNum::IsMinimallyEncoded(const std::vector<uint8_t> &vch,
     return true;
 }
 
-bool CScriptNum::MinimallyEncode(std::vector<uint8_t> &data) {
+bool CScriptNum::MinimallyEncode(std::vector<uint8_t> &data)
+{
     if (data.size() == 0) {
         return false;
     }
@@ -358,7 +359,7 @@ bool CScriptNum::MinimallyEncode(std::vector<uint8_t> &data) {
         return true;
     }
 
-    // If the next byte has it sign bit set, then we are minimaly encoded.
+    // If the next byte has its sign bit set, then we are minimally encoded.
     if (data[data.size() - 2] & 0x80) {
         return false;
     }
@@ -368,7 +369,7 @@ bool CScriptNum::MinimallyEncode(std::vector<uint8_t> &data) {
         // We found a non zero byte, time to encode.
         if (data[i - 1] != 0) {
             if (data[i - 1] & 0x80) {
-                // We found a byte with it sign bit set so we need one more
+                // We found a byte with its sign bit set so we need one more
                 // byte.
                 data[i++] = last;
             } else {

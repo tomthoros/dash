@@ -320,17 +320,20 @@ public:
         return *this;
     }
 
-    TestBuilder& Push(const uint256& hash) {
+    TestBuilder& Push(const uint256& hash)
+    {
         DoPush(ToByteVector(hash));
         return *this;
     }
 
-    TestBuilder& Push(const CScript& script) {
+    TestBuilder& Push(const CScript& script)
+    {
          DoPush(std::vector<unsigned char>(script.begin(), script.end()));
         return *this;
     }
 
-    std::vector<uint8_t> DoSignECDSA(const CKey &key, const uint256 &hash, unsigned int lenR = 32, unsigned int lenS = 32) const {
+    std::vector<uint8_t> DoSignECDSA(const CKey &key, const uint256 &hash, unsigned int lenR = 32, unsigned int lenS = 32) const
+    {
         std::vector<unsigned char> vchSig, r, s;
         uint32_t iter = 0;
         do {
@@ -354,7 +357,8 @@ public:
         return *this;
     }
 
-    TestBuilder& PushDataSig(const CKey &key, const std::vector<uint8_t> &data, unsigned int lenR = 32, unsigned int lenS = 32) {
+    TestBuilder& PushDataSig(const CKey &key, const std::vector<uint8_t> &data, unsigned int lenR = 32, unsigned int lenS = 32)
+    {
         std::vector<uint8_t> vchHash(32);
         CSHA256().Write(data.data(), data.size()).Finalize(vchHash.data());
 
