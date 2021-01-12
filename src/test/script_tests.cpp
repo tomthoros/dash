@@ -104,7 +104,7 @@ const char *FormatScriptError(ScriptError_t err)
     return "";
 }
 
-ScriptError_t ParseScriptError(const std::string &name)
+ScriptError_t ParseScriptError(const std::string& name)
 {
     for (unsigned int i=0; i<ARRAYLEN(script_errors); ++i)
         if (script_errors[i].name == name)
@@ -332,7 +332,7 @@ public:
         return *this;
     }
 
-    std::vector<uint8_t> DoSignECDSA(const CKey &key, const uint256 &hash, unsigned int lenR = 32, unsigned int lenS = 32) const
+    std::vector<uint8_t> DoSignECDSA(const CKey& key, const uint256& hash, unsigned int lenR = 32, unsigned int lenS = 32) const
     {
         std::vector<unsigned char> vchSig, r, s;
         uint32_t iter = 0;
@@ -357,7 +357,7 @@ public:
         return *this;
     }
 
-    TestBuilder& PushDataSig(const CKey &key, const std::vector<uint8_t> &data, unsigned int lenR = 32, unsigned int lenS = 32)
+    TestBuilder& PushDataSig(const CKey& key, const std::vector<uint8_t>& data, unsigned int lenR = 32, unsigned int lenS = 32)
     {
         std::vector<uint8_t> vchHash(32);
         CSHA256().Write(data.data(), data.size()).Finalize(vchHash.data());
@@ -998,7 +998,7 @@ sign_multisig(CScript scriptPubKey, std::vector<CKey> keys, CTransaction transac
     return result;
 }
 CScript
-sign_multisig(CScript scriptPubKey, const CKey &key, CTransaction transaction)
+sign_multisig(CScript scriptPubKey, const CKey& key, CTransaction transaction)
 {
     std::vector<CKey> keys;
     keys.push_back(key);

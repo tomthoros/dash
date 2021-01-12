@@ -37,8 +37,8 @@ struct KeyData {
     }
 };
 
-static void CheckError(uint32_t flags, const stacktype &original_stack,
-                       const CScript &script, ScriptError expected)
+static void CheckError(uint32_t flags, const stacktype& original_stack,
+                       const CScript& script, ScriptError expected)
 {
     BaseSignatureChecker sigchecker;
     ScriptError err = ScriptError::SCRIPT_ERR_OK;
@@ -48,8 +48,8 @@ static void CheckError(uint32_t flags, const stacktype &original_stack,
     BOOST_CHECK(err == expected);
 }
 
-static void CheckPass(uint32_t flags, const stacktype &original_stack,
-                      const CScript &script, const stacktype &expected)
+static void CheckPass(uint32_t flags, const stacktype& original_stack,
+                      const CScript& script, const stacktype& expected)
 {
     BaseSignatureChecker sigchecker;
     ScriptError err = ScriptError::SCRIPT_ERR_OK;
@@ -63,17 +63,17 @@ static void CheckPass(uint32_t flags, const stacktype &original_stack,
 /**
  * General utility functions to check for script passing/failing.
  */
-static void CheckTestResultForAllFlags(const stacktype &original_stack,
-                                       const CScript &script,
-                                       const stacktype &expected)
+static void CheckTestResultForAllFlags(const stacktype& original_stack,
+                                       const CScript& script,
+                                       const stacktype& expected)
 {
     for (uint32_t flags : flagset) {
         CheckPass(flags, original_stack, script, expected);
     }
 }
 
-static void CheckErrorForAllFlags(const stacktype &original_stack,
-                                  const CScript &script, ScriptError expected)
+static void CheckErrorForAllFlags(const stacktype& original_stack,
+                                  const CScript& script, ScriptError expected)
 {
     for (uint32_t flags : flagset) {
         CheckError(flags, original_stack, script, expected);

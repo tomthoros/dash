@@ -312,7 +312,7 @@ bool GetScriptOp(CScriptBase::const_iterator& pc, CScriptBase::const_iterator en
     return true;
 }
 
-bool CScriptNum::IsMinimallyEncoded(const std::vector<uint8_t> &vch, const size_t nMaxNumSize)
+bool CScriptNum::IsMinimallyEncoded(const std::vector<uint8_t>& vch, const size_t nMaxNumSize)
 {
     if (vch.size() > nMaxNumSize) {
         return false;
@@ -340,7 +340,7 @@ bool CScriptNum::IsMinimallyEncoded(const std::vector<uint8_t> &vch, const size_
     return true;
 }
 
-bool CScriptNum::MinimallyEncode(std::vector<uint8_t> &data)
+bool CScriptNum::MinimallyEncode(std::vector<uint8_t>& data)
 {
     if (data.size() == 0) {
         return false;

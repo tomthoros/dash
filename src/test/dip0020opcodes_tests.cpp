@@ -21,9 +21,9 @@ std::array<uint32_t, 2> flagset{{0, STANDARD_SCRIPT_VERIFY_FLAGS}};
 /**
  * General utility functions to check for script passing/failing.
  */
-static void CheckTestResultForAllFlags(const stacktype &original_stack,
-                                       const CScript &script,
-                                       const stacktype &expected)
+static void CheckTestResultForAllFlags(const stacktype& original_stack,
+                                       const CScript& script,
+                                       const stacktype& expected)
 {
     BaseSignatureChecker sigchecker;
 
@@ -36,8 +36,8 @@ static void CheckTestResultForAllFlags(const stacktype &original_stack,
     }
 }
 
-static void CheckError(uint32_t flags, const stacktype &original_stack,
-                       const CScript &script, ScriptError expected_error)
+static void CheckError(uint32_t flags, const stacktype& original_stack,
+                       const CScript& script, ScriptError expected_error)
 {
     BaseSignatureChecker sigchecker;
     ScriptError err = ScriptError::SCRIPT_ERR_OK;
@@ -47,8 +47,8 @@ static void CheckError(uint32_t flags, const stacktype &original_stack,
     BOOST_CHECK(err == expected_error);
 }
 
-static void CheckErrorForAllFlags(const stacktype &original_stack,
-                                  const CScript &script,
+static void CheckErrorForAllFlags(const stacktype& original_stack,
+                                  const CScript& script,
                                   ScriptError expected_error)
 {
     for (uint32_t flags : flagset) {
@@ -56,13 +56,13 @@ static void CheckErrorForAllFlags(const stacktype &original_stack,
     }
 }
 
-static void CheckOpError(const stacktype &original_stack, opcodetype op,
+static void CheckOpError(const stacktype& original_stack, opcodetype op,
                          ScriptError expected_error)
 {
     CheckErrorForAllFlags(original_stack, CScript() << op, expected_error);
 }
 
-static void CheckAllBitwiseOpErrors(const stacktype &stack,
+static void CheckAllBitwiseOpErrors(const stacktype& stack,
                                     ScriptError expected_error)
 {
     CheckOpError(stack, OP_AND, expected_error);
@@ -70,13 +70,13 @@ static void CheckAllBitwiseOpErrors(const stacktype &stack,
     CheckOpError(stack, OP_XOR, expected_error);
 }
 
-static void CheckBinaryOp(const valtype &a, const valtype &b, opcodetype op,
-                          const valtype &expected)
+static void CheckBinaryOp(const valtype& a, const valtype& b, opcodetype op,
+                          const valtype& expected)
 {
     CheckTestResultForAllFlags({a, b}, CScript() << op, {expected});
 }
 
-static valtype NegativeValtype(const valtype &v)
+static valtype NegativeValtype(const valtype& v)
 {
     valtype r(v);
     if (r.size() > 0) {
@@ -117,10 +117,10 @@ BOOST_AUTO_TEST_CASE(negative_valtype_test)
 /**
  * Bitwise Opcodes
  */
-static void RunTestForAllBitwiseOpcodes(const valtype &a, const valtype &b,
-                                        const valtype &expected_and,
-                                        const valtype &expected_or,
-                                        const valtype &expected_xor)
+static void RunTestForAllBitwiseOpcodes(const valtype& a, const valtype& b,
+                                        const valtype& expected_and,
+                                        const valtype& expected_or,
+                                        const valtype& expected_xor)
 {
     // Bitwise ops are commutative, so we check both ways.
     CheckBinaryOp(a, b, OP_AND, expected_and);
@@ -131,10 +131,10 @@ static void RunTestForAllBitwiseOpcodes(const valtype &a, const valtype &b,
     CheckBinaryOp(b, a, OP_XOR, expected_xor);
 }
 
-static void RunTestForAllBitwiseOpcodesSizes(const valtype &a, const valtype &b,
-                                             const valtype &expected_and,
-                                             const valtype &expected_or,
-                                             const valtype &expected_xor)
+static void RunTestForAllBitwiseOpcodesSizes(const valtype& a, const valtype& b,
+                                             const valtype& expected_and,
+                                             const valtype& expected_or,
+                                             const valtype& expected_xor)
 {
     valtype wa, wb, wand, wor, wxor;
     for (size_t i = 0; i < a.size(); i++) {
@@ -148,9 +148,9 @@ static void RunTestForAllBitwiseOpcodesSizes(const valtype &a, const valtype &b,
     }
 }
 
-static void TestBitwiseOpcodes(const valtype &a, const valtype &b,
-                               const valtype &expected_and,
-                               const valtype &expected_or)
+static void TestBitwiseOpcodes(const valtype& a, const valtype& b,
+                               const valtype& expected_and,
+                               const valtype& expected_or)
 {
     valtype expected_xor(expected_and.size());
     for (size_t i = 0; i < a.size(); i++) {
@@ -406,7 +406,7 @@ BOOST_AUTO_TEST_CASE(bitwise_opcodes_test)
 /**
  * String opcodes.
  */
-static void CheckStringOp(const valtype &a, const valtype &b, const valtype &n)
+static void CheckStringOp(const valtype& a, const valtype& b, const valtype& n)
 {
     CheckBinaryOp(a, b, OP_CAT, n);
 
@@ -535,7 +535,7 @@ BOOST_AUTO_TEST_CASE(string_opcodes_test)
 /**
  * Type conversion opcodes.
  */
-static void CheckTypeConversionOp(const valtype &bin, const valtype &num)
+static void CheckTypeConversionOp(const valtype& bin, const valtype& num)
 {
     // Check BIN2NUM.
     CheckTestResultForAllFlags({bin}, CScript() << OP_BIN2NUM, {num});
@@ -571,12 +571,12 @@ static void CheckTypeConversionOp(const valtype &bin, const valtype &num)
                                {num});
 }
 
-static void CheckBin2NumError(const stacktype &original_stack, ScriptError expected_error)
+static void CheckBin2NumError(const stacktype& original_stack, ScriptError expected_error)
 {
     CheckErrorForAllFlags(original_stack, CScript() << OP_BIN2NUM, expected_error);
 }
 
-static void CheckNum2BinError(const stacktype &original_stack, ScriptError expected_error)
+static void CheckNum2BinError(const stacktype& original_stack, ScriptError expected_error)
 {
     CheckErrorForAllFlags(original_stack, CScript() << OP_NUM2BIN, expected_error);
 }
@@ -647,9 +647,9 @@ BOOST_AUTO_TEST_CASE(type_conversion_test)
 /**
  * Arithmetic Opcodes
  */
-static void CheckDivMod(const valtype &a, const valtype &b,
-                        const valtype &divExpected,
-                        const valtype &modExpected)
+static void CheckDivMod(const valtype& a, const valtype& b,
+                        const valtype& divExpected,
+                        const valtype& modExpected)
 {
     // Negative values for division
     CheckBinaryOp(a, b, OP_DIV, divExpected);
@@ -730,7 +730,7 @@ static void CheckDivMod(const valtype &a, const valtype &b,
         {modExpected});
 }
 
-static void CheckDivModError(const stacktype &original_stack,
+static void CheckDivModError(const stacktype& original_stack,
                              ScriptError expected_error)
 {
     CheckOpError(original_stack, OP_DIV, expected_error);
