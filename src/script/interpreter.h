@@ -100,7 +100,7 @@ enum
     SCRIPT_ENABLE_DIP0020_OPCODES = (1U << 15),
 };
 
-bool CheckSignatureEncoding(const std::vector<unsigned char>& vchSig, unsigned int flags, ScriptError* serror);
+bool CheckSignatureEncoding(const std::vector<unsigned char> &vchSig, unsigned int flags, ScriptError* serror);
 
 struct PrecomputedTransactionData
 {
