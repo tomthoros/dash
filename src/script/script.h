@@ -239,7 +239,7 @@ public:
     }
 
     static bool IsMinimallyEncoded(
-        const std::vector<uint8_t> &vch,
+        const std::vector<uint8_t>& vch,
         const size_t nMaxNumSize = nDefaultMaxNumSize);
 
     static bool MinimallyEncode(std::vector<uint8_t> &data);
