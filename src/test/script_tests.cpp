@@ -998,7 +998,7 @@ sign_multisig(CScript scriptPubKey, std::vector<CKey> keys, CTransaction transac
     return result;
 }
 CScript
-sign_multisig(CScript scriptPubKey, const CKey& key, CTransaction transaction)
+sign_multisig(CScript scriptPubKey, const CKey &key, CTransaction transaction)
 {
     std::vector<CKey> keys;
     keys.push_back(key);
